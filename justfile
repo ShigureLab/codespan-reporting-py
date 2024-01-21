@@ -45,7 +45,7 @@ lint:
 fmt:
   {{PYTHON}} -m ruff format .
 
-ci-install
+ci-install:
   just install
 
 ci-test:
