@@ -47,3 +47,6 @@ ci-install:
 
 ci-test:
   just test
+
+ci-lint:
+  just lint
