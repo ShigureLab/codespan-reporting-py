@@ -3,7 +3,7 @@ set positional-arguments
 PYTHON_DIR := if os_family() == "windows" { "./.venv/Scripts" } else { "./.venv/bin" }
 PYTHON := PYTHON_DIR + if os_family() == "windows" { "/python.exe" } else { "/python3" }
 SYSTEM_PYTHON := if os_family() == "windows" { "py.exe -3" } else { "python3" }
-VERSION := "0.1.1"
+VERSION := "0.1.0"
 
 create-venv:
   {{SYSTEM_PYTHON}} -m venv .venv
@@ -23,7 +23,7 @@ build:
 
 release:
   @echo 'Tagging {{VERSION}}...'
-  git tag {{VERSION}}
+  git tag v{{VERSION}}
   @echo 'Push to GitHub to trigger publish process...'
   git push --tags
 
