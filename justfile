@@ -45,6 +45,8 @@ lint:
 fmt:
   {{PYTHON}} -m ruff format .
 
+ci-install
+  just install
+
 ci-test:
-  {{PYTHON}} -m pytest
-  just clean
+  just test
