@@ -4,16 +4,28 @@ build-backend = "maturin"
 
 [project]
 name = "codespan-reporting"
+description = "A python binding for codespan-reporting"
+readme = "README.md"
 requires-python = ">=3.8"
+authors = [{ name = "Nyakku Shigure", email = "sigure.qaq@gmail.com" }]
+keywords = ["codespan-reporting"]
+license = { text = "MIT" }
 classifiers = [
+  "License :: OSI Approved :: MIT License",
   "Programming Language :: Rust",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.4.4", "ruff==0.1.5", "pyright>=1.1.293", "build"]
+dev = ["pytest>=7.4.4", "ruff==0.1.14", "pyright>=1.1.293", "build"]
 
 [tool.pyright]
 include = ["src", "tests"]
