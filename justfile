@@ -18,9 +18,6 @@ test:
   {{PYTHON}} -m pytest
   just clean
 
-snapshot:
-  {{PYTHON}} -m pytest --snapshot-update
-
 build:
   {{PYTHON}} -m build
 
@@ -45,8 +42,14 @@ lint:
 fmt:
   {{PYTHON}} -m ruff format .
 
-ci-install
+ci-install:
   just install
 
 ci-test:
   just test
+
+ci-lint:
+  just lint
+
+ci-fmt-check:
+  {{PYTHON}} -m ruff format --check .
