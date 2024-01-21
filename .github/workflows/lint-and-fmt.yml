@@ -24,15 +24,15 @@ jobs:
         run: |
           npm install -g prettier
 
-      - name: Install poetry
-        run: pipx install poetry
+      - name: Install maturin
+        run: pipx install maturin
 
       - name: Install python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.architecture }}
-          cache: 'poetry'
+          cache: 'pip'
 
       - name: Install just
         uses: extractions/setup-just@v1
