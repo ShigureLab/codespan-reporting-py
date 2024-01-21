@@ -22,7 +22,7 @@ build:
   {{PYTHON}} -m build
 
 release:
-  @echo 'Tagging {{VERSION}}...'
+  @echo 'Tagging v{{VERSION}}...'
   git tag v{{VERSION}}
   @echo 'Push to GitHub to trigger publish process...'
   git push --tags
