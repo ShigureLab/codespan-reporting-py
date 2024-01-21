@@ -23,7 +23,7 @@ pip install codespan-reporting
 ```python
 import textwrap
 
-from codespan_reporting._core import (
+from codespan_reporting import (
     Config,
     Diagnostic,
     Label,
