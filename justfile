@@ -50,3 +50,6 @@ ci-test:
 
 ci-lint:
   just lint
+
+ci-fmt-check:
+  ruff format --check .
