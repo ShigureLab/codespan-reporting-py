@@ -36,6 +36,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          just create-venv
           just ci-install
 
       - name: unit test
