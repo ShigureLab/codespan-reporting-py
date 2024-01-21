@@ -52,4 +52,4 @@ ci-lint:
   just lint
 
 ci-fmt-check:
-  ruff format --check .
+  {{PYTHON}} -m ruff format --check .
