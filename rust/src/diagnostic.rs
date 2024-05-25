@@ -1,6 +1,7 @@
 use pyo3::prelude::*;
 
 type FileId = usize;
+use pyo3::pybacked::PyBackedStr;
 
 #[pyclass]
 #[derive(Clone)]
@@ -97,7 +98,7 @@ impl Diagnostic {
         code: Option<&str>,
         message: &str,
         labels: Vec<Label>,
-        notes: Vec<&str>,
+        notes: Vec<PyBackedStr>,
     ) -> Self {
         Self {
             inner: codespan_reporting::diagnostic::Diagnostic::new(severity.into())
@@ -110,31 +111,51 @@ impl Diagnostic {
 
     #[staticmethod]
     #[pyo3(signature = (code = None, message = "", labels = vec![], notes = vec![]))]
-    fn bug(code: Option<&str>, message: &str, labels: Vec<Label>, notes: Vec<&str>) -> Self {
+    fn bug(code: Option<&str>, message: &str, labels: Vec<Label>, notes: Vec<PyBackedStr>) -> Self {
         Self::new(Severity::Bug, code, message, labels, notes)
     }
 
     #[staticmethod]
     #[pyo3(signature = (code = None, message = "", labels = vec![], notes = vec![]))]
-    fn error(code: Option<&str>, message: &str, labels: Vec<Label>, notes: Vec<&str>) -> Self {
+    fn error(
+        code: Option<&str>,
+        message: &str,
+        labels: Vec<Label>,
+        notes: Vec<PyBackedStr>,
+    ) -> Self {
         Self::new(Severity::Error, code, message, labels, notes)
     }
 
     #[staticmethod]
     #[pyo3(signature = (code = None, message = "", labels = vec![], notes = vec![]))]
-    fn warning(code: Option<&str>, message: &str, labels: Vec<Label>, notes: Vec<&str>) -> Self {
+    fn warning(
+        code: Option<&str>,
+        message: &str,
+        labels: Vec<Label>,
+        notes: Vec<PyBackedStr>,
+    ) -> Self {
         Self::new(Severity::Warning, code, message, labels, notes)
     }
 
     #[staticmethod]
     #[pyo3(signature = (code = None, message = "", labels = vec![], notes = vec![]))]
-    fn note(code: Option<&str>, message: &str, labels: Vec<Label>, notes: Vec<&str>) -> Self {
+    fn note(
+        code: Option<&str>,
+        message: &str,
+        labels: Vec<Label>,
+        notes: Vec<PyBackedStr>,
+    ) -> Self {
         Self::new(Severity::Note, code, message, labels, notes)
     }
 
     #[staticmethod]
     #[pyo3(signature = (code = None, message = "", labels = vec![], notes = vec![]))]
-    fn help(code: Option<&str>, message: &str, labels: Vec<Label>, notes: Vec<&str>) -> Self {
+    fn help(
+        code: Option<&str>,
+        message: &str,
+        labels: Vec<Label>,
+        notes: Vec<PyBackedStr>,
+    ) -> Self {
         Self::new(Severity::Help, code, message, labels, notes)
     }
 }
