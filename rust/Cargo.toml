@@ -9,5 +9,5 @@ name = "codespan_reporting_pyo3"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = "0.21.2"
+pyo3 = "0.22.0"
 codespan-reporting = "0.11.1"
