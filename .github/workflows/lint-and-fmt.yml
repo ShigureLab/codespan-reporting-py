@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         # Only run linter and formatter on minimum supported Python version
-        python-version: ['3.8']
+        python-version: ['3.10']
         architecture: ['x64']
     name: lint and fmt - Python ${{ matrix.python-version }} on ${{ matrix.architecture }}
     steps:
@@ -33,6 +33,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.architecture }}
           cache: 'pip'
+          allow-prereleases: true
 
       - name: Install just
         uses: extractions/setup-just@v3

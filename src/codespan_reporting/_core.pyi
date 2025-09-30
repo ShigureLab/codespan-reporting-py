@@ -1,3 +1,5 @@
+from typing import TypeAlias
+
 # config.rs
 class Config:
     def __init__(self) -> None: ...
@@ -20,7 +22,7 @@ class LabelStyle:
     Secondary: LabelStyle
     SecondaryUnderline: LabelStyle
 
-type FileId = int
+FileId: TypeAlias = int
 
 class Label:
     def __init__(
