@@ -28,7 +28,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.architecture }}
           cache: 'pip'
-          allow-prerelease: true
+          allow-prereleases: true
 
       - name: Install just
         uses: extractions/setup-just@v3
