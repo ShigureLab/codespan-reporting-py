@@ -26,12 +26,7 @@ classifiers = [
 dynamic = ["version"]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.4.4", "ruff==0.15.11", "pyright>=1.1.293", "build"]
-
-[tool.pyright]
-include = ["src", "tests"]
-pythonVersion = "3.10"
-typeCheckingMode = "strict"
+dev = ["pytest>=7.4.4", "ruff==0.15.11", "ty>=0.0.32", "build"]
 
 [tool.ruff]
 line-length = 120
@@ -56,9 +51,7 @@ select = [
   "RUF100",
 ]
 ignore = [
-  "E501", # line too long, duplicate with ruff fmt
-  "F401", # imported but unused, duplicate with pyright
-  "F841", # local variable is assigned to but never used, duplicate with pyright
+  "E501", # line too long, duplicate with ruff format
 ]
 
 [tool.ruff.lint.isort]

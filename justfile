@@ -37,7 +37,7 @@ clean-builds:
 
 lint:
   {{PYTHON}} -m ruff check .
-  {{PYTHON}} -m pyright .
+  {{PYTHON}} -m ty check --error-on-warning .
 
 fmt:
   {{PYTHON}} -m ruff format .
