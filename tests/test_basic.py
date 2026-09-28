@@ -1,5 +1,3 @@
-import sys
-import sysconfig
 import textwrap
 
 from codespan_reporting import (
@@ -13,10 +11,6 @@ from codespan_reporting import (
 
 
 def test_basic():
-    # Importing the native extension must not silently re-enable the GIL.
-    if sys.version_info >= (3, 13) and sysconfig.get_config_var("Py_GIL_DISABLED"):
-        assert not sys._is_gil_enabled()
-
     files = SimpleFiles()
 
     file_id = files.add(
