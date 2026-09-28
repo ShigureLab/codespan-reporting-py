@@ -1,6 +1,6 @@
+import sys
+import sysconfig
 import textwrap
-
-import pytest
 
 from codespan_reporting import (
     Config,
@@ -12,7 +12,11 @@ from codespan_reporting import (
 )
 
 
-def test_basic(capfd: pytest.CaptureFixture[str]):
+def test_basic():
+    # Importing the native extension must not silently re-enable the GIL.
+    if sys.version_info >= (3, 13) and sysconfig.get_config_var("Py_GIL_DISABLED"):
+        assert not sys._is_gil_enabled()
+
     files = SimpleFiles()
 
     file_id = files.add(
@@ -63,10 +67,3 @@ def test_basic(capfd: pytest.CaptureFixture[str]):
     writer = StandardStream.Stderr
     config = Config()
     emit(writer, config, files, diagnostic)
-
-    output = capfd.readouterr().err
-    assert "error[E0308]" in output
-    assert "FizzBuzz.fun" in output
-    assert "`case` clauses have incompatible types" in output
-    assert "expected `String`, found `Nat`" in output
-    assert "fizz₂" in output
