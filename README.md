@@ -14,6 +14,17 @@ A python binding for [codespan-reporting](https://github.com/brendanzab/codespan
 
 ## Installation
 
+Requires Python 3.11 or newer. CPython 3.15 (including the free-threaded `3.15t`
+build) is tested with native wheels. Standard CPython uses `cp311-abi3` wheels;
+free-threaded 3.15 uses separate `cp315-cp315t` wheels for Linux x86-64/AArch64,
+Windows x86-64, and macOS x86-64/Apple Silicon. Python 3.15 is currently tested
+against its release candidate; CI allows prerelease interpreters until the final
+release is available.
+
+The extension does not require the GIL. Concurrent rendering can share files and
+diagnostics, but callers must synchronize mutation of a shared `SimpleFiles`
+instance (for example, calls to `add` while another thread renders it).
+
 ```bash
 pip install codespan-reporting
 ```

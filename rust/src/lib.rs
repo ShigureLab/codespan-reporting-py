@@ -6,7 +6,7 @@ mod file;
 
 /// A python binding for codespan-reporting.
 #[pymodule]
-#[pyo3(name = "_core")]
+#[pyo3(name = "_core", gil_used = false)]
 fn codespan_reporting_pyo3(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(emit::emit, m)?)?;
     m.add_class::<file::SimpleFiles>()?;

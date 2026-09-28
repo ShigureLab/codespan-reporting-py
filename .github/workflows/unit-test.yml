@@ -11,35 +11,29 @@ jobs:
   unit-test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
-        architecture: ['x64']
-    name: unittest - Python ${{ matrix.python-version }} on ${{ matrix.architecture }}
+        python-version: ['3.11', '3.12', '3.13', '3.14', '3.15', '3.15t']
+    name: unittest - Python ${{ matrix.python-version }}
+    env:
+      EXPECTED_PYTHON_VERSION: ${{ matrix.python-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-
-      - name: Install maturin
-        run: pipx install maturin
 
       - name: Install python
         uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
-          architecture: ${{ matrix.architecture }}
           cache: 'pip'
           allow-prereleases: true
 
-      - name: Install just
-        uses: extractions/setup-just@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install dependencies
+      - name: Build and install wheel
         run: |
-          just create-venv
-          just ci-install
+          python -m pip install --upgrade pip
+          python -m pip wheel --no-deps --wheel-dir dist .
+          python -m pip install --no-index --only-binary=:all: --find-links dist codespan-reporting
+          python -m pip install pytest
 
-      - name: unit test
-        run: |
-          just ci-test
+      - name: Test installed native extension
+        run: python -m pytest -v
