@@ -47,10 +47,8 @@ pub struct Label {
     pub inner: codespan_reporting::diagnostic::Label<FileId>,
 }
 
-#[pymethods]
 impl Label {
-    #[new]
-    fn new(
+    fn create(
         label_style: LabelStyle,
         file_id: FileId,
         start: usize,
@@ -66,21 +64,53 @@ impl Label {
             .with_message(message),
         }
     }
+}
+
+#[pymethods]
+impl Label {
+    #[new]
+    fn new(
+        label_style: PyRef<'_, LabelStyle>,
+        file_id: FileId,
+        start: usize,
+        end: usize,
+        message: &str,
+    ) -> Self {
+        Self::create((*label_style).clone(), file_id, start, end, message)
+    }
 
     #[staticmethod]
     fn primary(file_id: FileId, start: usize, end: usize, message: &str) -> Self {
-        Self::new(LabelStyle::Primary, file_id, start, end, message)
+        Self::create(LabelStyle::Primary, file_id, start, end, message)
     }
 
     #[staticmethod]
     fn secondary(file_id: FileId, start: usize, end: usize, message: &str) -> Self {
-        Self::new(LabelStyle::Secondary, file_id, start, end, message)
+        Self::create(LabelStyle::Secondary, file_id, start, end, message)
     }
 }
 
 #[pyclass]
 pub struct Diagnostic {
     pub inner: codespan_reporting::diagnostic::Diagnostic<FileId>,
+}
+
+impl Diagnostic {
+    fn create(
+        severity: Severity,
+        code: Option<&str>,
+        message: &str,
+        labels: Vec<PyRef<'_, Label>>,
+        notes: Vec<PyBackedStr>,
+    ) -> Self {
+        Self {
+            inner: codespan_reporting::diagnostic::Diagnostic::new(severity.into())
+                .with_code(code.unwrap_or("").to_string())
+                .with_message(message.to_string())
+                .with_labels(labels.into_iter().map(|l| l.inner.clone()).collect())
+                .with_notes(notes.into_iter().map(|n| n.to_string()).collect()),
+        }
+    }
 }
 
 #[pymethods]
@@ -94,25 +124,24 @@ impl Diagnostic {
         notes = vec![])
     )]
     fn new(
-        severity: Severity,
+        severity: PyRef<'_, Severity>,
         code: Option<&str>,
         message: &str,
-        labels: Vec<Label>,
+        labels: Vec<PyRef<'_, Label>>,
         notes: Vec<PyBackedStr>,
     ) -> Self {
-        Self {
-            inner: codespan_reporting::diagnostic::Diagnostic::new(severity.into())
-                .with_code(code.unwrap_or("").to_string())
-                .with_message(message.to_string())
-                .with_labels(labels.into_iter().map(|l| l.inner).collect())
-                .with_notes(notes.into_iter().map(|n| n.to_string()).collect()),
-        }
+        Self::create((*severity).clone(), code, message, labels, notes)
     }
 
     #[staticmethod]
     #[pyo3(signature = (code = None, message = "", labels = vec![], notes = vec![]))]
-    fn bug(code: Option<&str>, message: &str, labels: Vec<Label>, notes: Vec<PyBackedStr>) -> Self {
-        Self::new(Severity::Bug, code, message, labels, notes)
+    fn bug(
+        code: Option<&str>,
+        message: &str,
+        labels: Vec<PyRef<'_, Label>>,
+        notes: Vec<PyBackedStr>,
+    ) -> Self {
+        Self::create(Severity::Bug, code, message, labels, notes)
     }
 
     #[staticmethod]
@@ -120,10 +149,10 @@ impl Diagnostic {
     fn error(
         code: Option<&str>,
         message: &str,
-        labels: Vec<Label>,
+        labels: Vec<PyRef<'_, Label>>,
         notes: Vec<PyBackedStr>,
     ) -> Self {
-        Self::new(Severity::Error, code, message, labels, notes)
+        Self::create(Severity::Error, code, message, labels, notes)
     }
 
     #[staticmethod]
@@ -131,10 +160,10 @@ impl Diagnostic {
     fn warning(
         code: Option<&str>,
         message: &str,
-        labels: Vec<Label>,
+        labels: Vec<PyRef<'_, Label>>,
         notes: Vec<PyBackedStr>,
     ) -> Self {
-        Self::new(Severity::Warning, code, message, labels, notes)
+        Self::create(Severity::Warning, code, message, labels, notes)
     }
 
     #[staticmethod]
@@ -142,10 +171,10 @@ impl Diagnostic {
     fn note(
         code: Option<&str>,
         message: &str,
-        labels: Vec<Label>,
+        labels: Vec<PyRef<'_, Label>>,
         notes: Vec<PyBackedStr>,
     ) -> Self {
-        Self::new(Severity::Note, code, message, labels, notes)
+        Self::create(Severity::Note, code, message, labels, notes)
     }
 
     #[staticmethod]
@@ -153,9 +182,9 @@ impl Diagnostic {
     fn help(
         code: Option<&str>,
         message: &str,
-        labels: Vec<Label>,
+        labels: Vec<PyRef<'_, Label>>,
         notes: Vec<PyBackedStr>,
     ) -> Self {
-        Self::new(Severity::Help, code, message, labels, notes)
+        Self::create(Severity::Help, code, message, labels, notes)
     }
 }
