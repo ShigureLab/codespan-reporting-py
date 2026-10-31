@@ -30,7 +30,7 @@ jobs:
           target: ${{ matrix.target }}
           args: --release --out dist --find-interpreter
           sccache: 'true'
-          manylinux: auto
+          manylinux: ${{ matrix.target == 'x86' && '2_28' || 'auto' }}
       - name: Upload wheels
         uses: actions/upload-artifact@v7
         with:
